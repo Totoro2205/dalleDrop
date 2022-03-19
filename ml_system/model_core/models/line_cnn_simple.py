@@ -1,7 +1,5 @@
 # a model that can read multiple images in a character!
 
-from email.policy import default
-import math
 from typing import Any, Dict
 import argparse 
 import math
@@ -9,7 +7,7 @@ import math
 import torch
 import torch.nn as nn
 
-from .cnn import CBB, IMAGE_SIZE
+from .cnn import CNN, IMAGE_SIZE
 
 WINDOW_WIDTH = 28
 WINDOW_STRIDE = 28
@@ -51,7 +49,7 @@ class LineCNNSimple(nn.module):
         return activations
 
     @staticmethod
-    def add_to_arparse(parser):
+    def add_to_argparse(parser):
         CNN.add_to_argparse(parser)
         parser.add_argument('--window_width', type=int, default=WINDOW_WIDTH, help= 'width of the window that will slide over the input image')
         parser.add_argument('--window_stride', type = int, default=WINDOW_STRIDE, help='Stride of that will slide over the input image')
