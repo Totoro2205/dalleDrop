@@ -1,4 +1,4 @@
-# a model that can read multiple images in a character!
+# A model that can read multiple images in a character!
 
 from typing import Any, Dict
 import argparse 
@@ -14,16 +14,16 @@ WINDOW_STRIDE = 28
 
 class LineCNNSimple(nn.module):
     def __init__(
-         self,
-         data_config: Dict[str, Any],
-         args: argparse.Namespace = None,
+        self,
+        data_config: Dict[str, Any],
+        args: argparse.Namespace = None,
     ) -> None:
 
     super().__init__()
     self.args = vars(args) if args is not None else {}
 
     self.WW = self.args.get('window_width', WINDOW_WIDTH)
-    self,WS = self.args.get('window_stride', WINDOW_STRIDE)
+    self.WS = self.args.get('window_stride', WINDOW_STRIDE)
     self.limit_output_length = self.args.get('limit_output_length', False)
 
     self.num_classes = len(data_config['mapping'])
