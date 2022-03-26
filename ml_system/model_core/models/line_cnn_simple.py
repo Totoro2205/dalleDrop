@@ -19,16 +19,16 @@ class LineCNNSimple(nn.module):
         args: argparse.Namespace = None,
     ) -> None:
 
-    super().__init__()
-    self.args = vars(args) if args is not None else {}
+        super().__init__()
+        self.args = vars(args) if args is not None else {}
 
-    self.WW = self.args.get('window_width', WINDOW_WIDTH)
-    self.WS = self.args.get('window_stride', WINDOW_STRIDE)
-    self.limit_output_length = self.args.get('limit_output_length', False)
+        self.WW = self.args.get('window_width', WINDOW_WIDTH)
+        self.WS = self.args.get('window_stride', WINDOW_STRIDE)
+        self.limit_output_length = self.args.get('limit_output_length', False)
 
-    self.num_classes = len(data_config['mapping'])
-    self.output_length = data_config['output_dims'][0]
-    self.cnn = CNN(data_config=data_config, args=args)
+        self.num_classes = len(data_config['mapping'])
+        self.output_length = data_config['output_dims'][0]
+        self.cnn = CNN(data_config=data_config, args=args)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         B, _C, H, W = x.shape
