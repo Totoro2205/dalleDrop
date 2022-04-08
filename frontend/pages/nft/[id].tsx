@@ -32,11 +32,21 @@ function NFTDropPage() {
             <hr className='my-2 border'/>
 
             {/* Content*/}
-            <div>
-                <img className='w-80 objext-cover pb-10 lg:h-40' src="https://links.papareact.com/bdy" alt="" />
+            <div className='mt-10 flex flex-1 flex-col items-center space-y-6 text-center lg:justify-center lg:space-y-0'>
+                <img 
+                    className='w-80 objext-cover pb-10 lg:h-40' src="https://links.papareact.com/bdy" 
+                    alt="" 
+                />
+                <h1 className="text-3xl font-bold lg:text-5xl lg:font-extrabold"> Full Stack Club | The Drop
+                </h1>
+
+                <p className="pt-2 text-xl text-green-500"> 13 / 21 NFT's</p>
             </div>
 
             {/* Mint button*/}
+            <button className='h-16 w-full rounded-full bg-red-600 text-white font-bold'>
+                Mint NFT (0.01 ETH)
+            </button>
         </div>
     </div>
     
