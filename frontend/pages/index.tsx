@@ -10,25 +10,25 @@ interface Props {
 }
 const Home = ({ collections }: Props) => {
   return (
-    <div className='mx-auto max-w-7xl flex-col min-h-screen max-w-7xl flex-col py-2 px-10 2xl:px-0'>
+    <div className='  bg-gradient-to-br from-slate-800 to-zinc-300  mx-auto max-w-7xl flex-col min-h-screen max-w-7xl flex-col py-2 px-10 2xl:px-0'>
       <Head>
         <title>web3</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <h1 className='mb-10 text-4xl font-extralight'> The{' '}
+      <h1 className='mb-10 text-4xl text-white font-extralight'> The{' '}
           <span className='font-extrabold underline decoration-pink-600/50'>dalle 
           </span>{' '} 
         NFT Market Place
       </h1>
 
 
-      <main className='bg-slate-100 p-10 shadow-xl shadow-rose-400/20'>
+      <main className='bg-gradient-to-br from-green-800 to-slate-700  p-10 shadow-xl shadow-rose-400/20'>
         <div className='grid space-x-3 md:grid-cols-2 lg:grid-cols 2xl:grid-cols-4'>
           {collections.map(collection => (
             <Link href={`/nft/${collection.slug.current}`}>
             <div className='flex flex-col items-center cursor-pointer transition-all duration-200 hover:scale-105'>
-              <img className='h-96 w-60 rounded-2xl object-cover' src={urlFor(collection.mainImage).url()} alt="" 
+              <img className='h-96 w-60 rounded-2xl bg-gradient-to-br from-yellow-800 to-rose-600 p-3 lg:h-40 object-cover' src={urlFor(collection.mainImage).url()} alt="" 
               />
               <div className='p-5'>
                 <h2 className='text-3xl'>

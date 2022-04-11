@@ -18,7 +18,7 @@ function NFTDropPage({collection}: Props) {
     <div className='flex h-screen flex-col lg:grid lg:grid-cols-10 '>
         <div className='bg-gradient-to-br from-cyan-800 to-zinc-900 lg:col-span-4'>
             <div className='flex flex-col items-center justify-center py-2 lg:min-h-screen '>
-                <div className="rounded-xl bg-gradient-to-br from-yellow-400 to-purple-600 p-2">
+                <div className="rounded-xl bg-gradient-to-br from-violet-800 to-yellow-600 p-2">
                     <img 
                         className='w-44 rounded-xl object-cover lg:h-96 lg:w-72' 
                         src={urlFor(collection.previewImage).url()}
@@ -52,10 +52,10 @@ function NFTDropPage({collection}: Props) {
             {/* Content*/}
             <div className='mt-10 flex flex-1 flex-col items-center space-y-6 text-center lg:justify-center lg:space-y-0'>
                 <img 
-                    className='w-80 rounded-xl bg-gradient-to-br from-slate-400 to-violet-600 p-1 lg:h-40' src={urlFor(collection.mainImage).url()}
+                    className='w-80 rounded-xl bg-gradient-to-br from-yellow-800 to-rose-600 p-1 lg:h-40' src={urlFor(collection.mainImage).url()}
                     alt="" 
                 />
-                <h1 className="text-3xl font-bold lg:text-5xl lg:font-extrabold"> {collection.title}
+                <h1 className="text-3xl py-3 font-bold lg:text-5xl lg:font-extrabold"> {collection.title}
                 </h1>
 
                 <p className="pt-2 text-xl text-green-500"> 13 / 21 NFT's</p>
