@@ -10,7 +10,7 @@ interface Props {
 }
 const Home = ({ collections }: Props) => {
   return (
-    <div className='  bg-gradient-to-br from-slate-800 to-zinc-300  mx-auto max-w-7xl flex-col min-h-screen max-w-7xl flex-col py-2 px-10 2xl:px-0'>
+    <div className='bg-gradient-to-br from-slate-800 to-zinc-300  mx-auto max-w-7xl flex-col min-h-screen max-w-7xl flex-col py-2 px-10 2xl:px-0'>
       <Head>
         <title>web3</title>
         <link rel="icon" href="/favicon.ico" />
