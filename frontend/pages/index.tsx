@@ -10,7 +10,7 @@ interface Props {
 }
 const Home = ({ collections }: Props) => {
   return (
-    <div className='bg-gradient-to-br from-slate-800 to-zinc-300  mx-auto max-w-7xl flex-col min-h-screen max-w-7xl flex-col py-2 px-10 2xl:px-0'>
+    <div className='bg-gradient-to-br from-purple-600 to-red-700  mx-auto max-w-7xl flex-col min-h-screen max-w-7xl flex-col py-2 px-10 2xl:px-0'>
       <Head>
         <title>web3</title>
         <link rel="icon" href="/favicon.ico" />
@@ -23,7 +23,7 @@ const Home = ({ collections }: Props) => {
       </h1>
 
 
-      <main className='bg-gradient-to-br from-green-800 to-slate-700  p-10 shadow-xl shadow-rose-400/20'>
+      <main className='bg-gradient-to-br from-red-700 to-blue-500  p-10 shadow-xl shadow-rose-400/20'>
         <div className='grid space-x-3 md:grid-cols-2 lg:grid-cols 2xl:grid-cols-4'>
           {collections.map(collection => (
             <Link href={`/nft/${collection.slug.current}`}>
@@ -34,7 +34,7 @@ const Home = ({ collections }: Props) => {
                 <h2 className='text-3xl'>
                   {collection.title}
                 </h2>
-                <p className='mt-2 text-sm text-gray-400'>{collection.description}
+                <p className='mt-2 text-sm text-green-400'>{collection.description}
                 </p>
  
               </div>  

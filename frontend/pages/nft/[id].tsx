@@ -151,13 +151,6 @@ function NFTDropPage({collection}: Props) {
  
                 )}
 
-                {loading && (
-                    <img 
-                        src="images/loading.gif" 
-                        alt="" 
-                        className="h-80 w-80 object-contain" 
-                    />
-                )}
             </div>
 
             {/* Mint button*/}
