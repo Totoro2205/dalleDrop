@@ -152,7 +152,11 @@ function NFTDropPage({collection}: Props) {
                 )}
 
                 {loading && (
-                    <img src='https://acegif.com/gifs-loading/' alt="" className="h-80 w-80 object-contain" />
+                    <img 
+                        src="images/loading.gif" 
+                        alt="" 
+                        className="h-80 w-80 object-contain" 
+                    />
                 )}
             </div>
 
