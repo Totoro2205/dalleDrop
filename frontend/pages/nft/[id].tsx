@@ -4,7 +4,7 @@ import { GetServerSideProps } from 'next';
 import { sanityClient, urlFor } from '../../sanity'
 import { Collection } from '../../typing';
 import { BigNumber} from 'ethers'
-
+import toast, { Toaster } from 'react-hot-toast'
 interface Props {
     collection: Collection
 }
@@ -13,13 +13,22 @@ function NFTDropPage({collection}: Props) {
     const [totalSupply, setTotalSupply] = useState<BigNumber>()
     const nftDrop = useNFTDrop(collection.address)
     const [loading, setLoading] = useState(true)
+    const [priceInEth, setPriceInEth] = useState<string>()
 
     // Auth
     const connectWithMetamask = useMetamask()
     const address = useAddress()
     const disconnect = useDisconnect()
     // ---
+    useEffect(() => {
+        if (!nftDrop) return
 
+        const fetchPrice = async() => {
+            const claimConditions = await nftDrop.claimConditions.getAll()
+            setPriceInEth(claimConditions?.[0].currencyMetadata.displayValue)
+        }
+        fetchPrice()
+    }, [nftDrop])
     useEffect(() => {
         if (!nftDrop) return
 
@@ -38,11 +47,62 @@ function NFTDropPage({collection}: Props) {
         fetchNFTDropData()
     }, [nftDrop])
     
+    const mintNft = () => {
+        if (!nftDrop || !address) return 
+        
+        const quantity = 1
+        setLoading(true)
+        const notification = toast.loading('Minting...', {
+            style: {
+                background: 'white',
+                color: 'green',
+                fontWeight: 'bolder',
+                fontSize: '17px',
+                padding: '20px',
+            }
+        })
 
+        nftDrop.claimTo(address, quantity).then(async (tx) => {
+            const receipt = tx[0].receipt
+            const claimedTokenId = tx[0].id
+            const claimNFT = await tx[0].data()
+
+            toast('HOORAY.. Successfully Minted!', {
+                duration: 8000,
+                style: {
+                    background: 'green',
+                    color: 'white',
+                    fontWeight: 'bolder',
+                    fontSize: '17px',
+                    padding: '20px',
+                }
+            })
+
+            console.log(receipt)
+            console.log(claimedTokenId)
+            console.log(claimNFT)
+
+        }).catch(err => {
+            console.log(err)
+            toast('whoops...', {
+                style: {
+                    background: 'red',
+                    color: 'white',
+                    fontWeight: 'bolder',
+                    fontSize: '17px',
+                    padding: '20px,'
+                }
+            })
+        }).finally(() => {
+            setLoading(false)
+            toast.dismiss(notification)
+        })
+    }
 
   return (
     <div className='flex h-screen flex-col lg:grid lg:grid-cols-10 '>
-        <div className='bg-gradient-to-br from-cyan-800 to-zinc-900 lg:col-span-4'>
+        <Toaster position='bottom-center' />
+        <div className='bg-gradient-to-br from-blue-600 to-orange-600 lg:col-span-4'>
             <div className='flex flex-col items-center justify-center py-2 lg:min-h-screen '>
                 <div className="rounded-xl bg-gradient-to-br from-violet-800 to-yellow-600 p-2">
                     <img 
@@ -58,11 +118,11 @@ function NFTDropPage({collection}: Props) {
             </div>
         </div>
         {/* Right */}
-        <div className='flex flex-1 flex-col bg-gradient-to-br from-green-900 to-zinc-900 p-12 lg:col-span-6'>
+        <div className='flex flex-1 flex-col bg-gradient-to-br from-yellow-400 to-rose-900 p-12 lg:col-span-6'>
             {/* Header */}
             <header className='flex items-center justify-between'>
                 <h1 className='w-52 cursor-pointer text-xl font-extralight sm:w-80'> The{' '}
-                    <span className='font-extrabold underline decoration-slate-100/50'>Web3
+                    <span className='font-extrabold underline decoration-yellow-100/50'>Dalle
                     </span>{' '} 
                 NFT Market Place
                 </h1>
@@ -74,7 +134,7 @@ function NFTDropPage({collection}: Props) {
                 </button>
             </header>
             <hr className='my-2 border'/>
-            {address &&  <p className='text-center text-sm text-rose-400'> you're logged in with wallet {address.substring(0,5)}...{address.substring(address.length -5)}</p>}
+            {address &&  <p className='text-center text-sm text-green-900'> you're logged in with wallet {address.substring(0,5)}...{address.substring(address.length -5)}</p>}
             {/* Content*/}
             <div className='mt-10 flex flex-1 flex-col items-center space-y-6 text-center lg:justify-center lg:space-y-0'>
                 <img 
@@ -84,19 +144,31 @@ function NFTDropPage({collection}: Props) {
                 <h1 className="text-3xl py-3 font-bold lg:text-5xl lg:font-extrabold"> {collection.title}
                 </h1>
                 {loading ? (
-                    <p className="animate-pulse pt-2 text-xl text-green-500"> Loading Supply Count ...</p>
+                    <p className="animate-bounce pt-2 text-xl text-green-900"> Loading Supply Count ...</p>
                 ): (
-                  <p className="pt-2 text-xl text-green-500"> {claimedSupply} / {totalSupply?.toString()} NFT's claimed
-                    </p>
+                  <p className="pt-2 text-xl text-green-900">{claimedSupply} / {totalSupply?.toString()} NFT's claimed
+                  </p>
  
                 )}
-            
-            
+
+                {loading && (
+                    <img src='https://acegif.com/gifs-loading/' alt="" className="h-80 w-80 object-contain" />
+                )}
             </div>
 
             {/* Mint button*/}
-            <button className='h-16 w-full rounded-full bg-violet-800 text-white font-bold'>
-                Mint NFT (0.01 ETH)
+            <button onClick={mintNft} disabled={loading || claimedSupply === totalSupply?.toNumber() || !address } className='mt-10 h-16 w-full rounded-full bg-violet-800 text-white disabled:bg-gray-400 font-bold'
+            >
+                {loading ? (
+                    <>Loading</>
+                ): claimedSupply === totalSupply?.toNumber() ? (
+                    <>SOLD OUT</>
+
+                ): !address ? (
+                    <>Sign in to Mint</>
+                ): (
+                    <span className='font-bold'>Mint NFT ({priceInEth} ETH)</span>
+                )}
             </button>
         </div>
     </div>
