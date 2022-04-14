@@ -1,19 +1,45 @@
-import React from 'react'
-import { useAddress, useDisconnect, useMetamask } from "@thirdweb-dev/react";
+import React, { useEffect, useState} from 'react'
+import { useAddress, useDisconnect, useMetamask, useNFTDrop } from "@thirdweb-dev/react";
 import { GetServerSideProps } from 'next';
 import { sanityClient, urlFor } from '../../sanity'
 import { Collection } from '../../typing';
-
+import { BigNumber} from 'ethers'
 
 interface Props {
     collection: Collection
 }
 function NFTDropPage({collection}: Props) {
+    const [claimedSupply, setClaimedSupply] = useState<number>(0)
+    const [totalSupply, setTotalSupply] = useState<BigNumber>()
+    const nftDrop = useNFTDrop(collection.address)
+    const [loading, setLoading] = useState(true)
+
     // Auth
     const connectWithMetamask = useMetamask()
     const address = useAddress()
     const disconnect = useDisconnect()
     // ---
+
+    useEffect(() => {
+        if (!nftDrop) return
+
+        const fetchNFTDropData = async () => {
+            setLoading(true)
+            const claimed = await nftDrop.getAllClaimed()
+
+            const total = await nftDrop.totalSupply()
+
+            setClaimedSupply(claimed.length)
+            setTotalSupply(total)
+
+            setLoading(false)
+        }
+
+        fetchNFTDropData()
+    }, [nftDrop])
+    
+
+
   return (
     <div className='flex h-screen flex-col lg:grid lg:grid-cols-10 '>
         <div className='bg-gradient-to-br from-cyan-800 to-zinc-900 lg:col-span-4'>
@@ -57,8 +83,15 @@ function NFTDropPage({collection}: Props) {
                 />
                 <h1 className="text-3xl py-3 font-bold lg:text-5xl lg:font-extrabold"> {collection.title}
                 </h1>
-
-                <p className="pt-2 text-xl text-green-500"> 13 / 21 NFT's</p>
+                {loading ? (
+                    <p className="animate-pulse pt-2 text-xl text-green-500"> Loading Supply Count ...</p>
+                ): (
+                  <p className="pt-2 text-xl text-green-500"> {claimedSupply} / {totalSupply?.toString()} NFT's claimed
+                    </p>
+ 
+                )}
+            
+            
             </div>
 
             {/* Mint button*/}
